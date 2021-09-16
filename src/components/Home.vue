@@ -1,41 +1,32 @@
 <template>
-<div>
-<!--<div>
-    <div
-      v-for="(user, index) in users"
-      :key="user.id"
-      style="display: flex"
-    >
-      <div
-        v-for="field in Object.keys(user)"
-        :key="`user-field-${user.id}-${field}`"
-      >
-        <div v-if="field === `id`">{{ user.id }}</div>
-        <input v-else v-model="users[index][field]" />
-      </div>
-      <button @click="update(index)">Update</button>
-    </div>
-  </div>-->
-
+<div><br>
+<h4>Enter data to fields to create or update data:</h4>
+  <div class="form-group">
+  <form>
       <input v-model="users.name" placeholder="Name">
       <input v-model="users.email" placeholder="Email">
       <input v-model="users.phone" placeholder="Phone">
-
+      <button @click="addUser()">POST</button>
+  </form>
+  </div>
 <!-- Start of table HTML including v-for and v-bind to assign each item of data to columns -->
 
   <table class='table table-dark table-bordered'>
   <tr>
-        <td>ID</td>
-        <td>Name</td>
-        <td>Email Address</td>
-        <td>Phone</td>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Email Address</th>
+    <th>Phone</th>
   </tr>
-  <tr v-for="item in list" v-bind:key="item.id">
+  <tr
+    v-for="(item, index) in list"
+    :key="item.id"
+  >
         <td>{{item.id}}</td>
-        <td>{{item.name}}</td>
-        <td>{{item.email}}</td>
-        <td>{{item.phone}}</td>
-        <td><button>POST</button></td>
+        <td><input v-model="list[index].name" /></td>
+        <td><input v-model="list[index].email" /></td>
+        <td><input v-model="list[index].phone" /></td>
+        <td><button @click="putUser(list[index])">PUT</button></td>
   </tr>
   </table>
   <!-- End of table -->
@@ -57,31 +48,39 @@ export default {
    {
     return {
       users: {
-        id: '',
         name: '',
         email: '', 
         phone: ''
       },
-        list:'',
+      list:[],
       }
   },
   methods:{
     
-    putUser(index) {
-      axios.put('https://jsonplaceholder.typicode.com/users/$user.id',this.users[index])
+    putUser(user) {
+      axios.put('https://jsonplaceholder.typicode.com/users', user)
+      .then(function(response)  {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      }) 
     },
   
  addUser() {
-      axios.post('https://jsonplaceholder.typicode.com/users', {
-        name: this.users.name,
-        email: this.users.email,
-        phone: this.users.phone
+      axios.post('https://jsonplaceholder.typicode.com/users', { 
+        name: this.users,
+        email: this.email,
+        phone: this.phone
       })
         .then((response) => {
-          this.isSuccess = true;
           console.log(response);
-        });
- }
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+        }
+
     },
 
   mounted() 
