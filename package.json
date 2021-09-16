@@ -9,8 +9,9 @@
   },
   "dependencies": {
     "@vue/cli-plugin-babel": "4.1.1",
-    "axios": "0.21.1",
-    "vue": "^2.6.11"
+    "axios": "^0.21.1",
+    "vue": "^2.6.11",
+    "vue-axios": "^3.3.6"
   },
   "devDependencies": {
     "@vue/cli-plugin-eslint": "4.1.1",
